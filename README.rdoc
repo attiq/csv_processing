@@ -1,0 +1,24 @@
+== README
+
+* Ruby version
+
+  ruby-2.2.3
+
+* Database creation
+
+  rake db:create
+
+* Database initialization
+
+  rake db:migrate && rake db:test:prepare
+
+* How to run the test suite
+
+  $ rake spec
+
+  or
+
+  $ rspec spec --format documentation
+
+
+* ...
