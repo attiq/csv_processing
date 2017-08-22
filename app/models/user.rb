@@ -4,7 +4,9 @@ $LOGGER = Logger.new('log/csv.log', 'daily')
 
 class User < ActiveRecord::Base
 
-  validates :email, uniqueness: true, allow_blank: true
+  validates :name, presence: true
+  validates :email, presence: true
+  validates :email, uniqueness: true
 
   def self.process_csv
     $LOGGER.info "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
