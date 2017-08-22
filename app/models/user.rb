@@ -16,25 +16,15 @@ class User < ActiveRecord::Base
         params = {name: row['Name'], email: row['Email Address'], phone: row['Telephone Number'], website: row['Website']}
 
         # Rows without a name or email address should not be imported
-        next if params[:name].blank? && params[:email].blank?
-
-        # check if user is already existes
-        user = User.where('name = ? OR email = ? ', params[:name], params[:email])
+        next if params[:name].blank? || params[:email].blank?
 
         # if user already exists update the data otherwise will create a new user
-        if user.present?
-          if user.update_attributes(params)
-            response << "#{user.name}:#{user.email} was succefully updated."
-          else
-            response << user.errors.full_messages.join(", ")
-          end
+        user = User.where(email: params[:email]).first_or_initialize
+
+        if user.update_attributes(params)
+          response << "#{user.name}:#{user.email} was succefully processed."
         else
-          user = User.create(params)
-          if user.save
-            response << "#{user.name}:#{user.email} was succefully created."
-          else
-            response << user.errors.full_messages.join(", ")
-          end
+          response << user.errors.full_messages.join(", ")
         end
       end
       $LOGGER.info "[#{Time.now}] End CSV Processing."
